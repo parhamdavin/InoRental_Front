@@ -13,7 +13,7 @@ function App() {
       </Route>
       
       {/* Main routes with Layout */}
-      <Route element={<Layout><Outlet /></Layout>}>
+      <Route element={<Layout></Layout>}>
         {MainRoutes}
       </Route>
     </Routes>

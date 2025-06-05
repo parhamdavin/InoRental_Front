@@ -4,6 +4,7 @@ import { FaGlobe, FaBars, FaServicestack } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
 import LoginModal from "../../../components/LoginModal/LoginModal";
+import SignupModal from "../../../components/SignupModal/SignupModal";
 
 interface HeaderSectionProps {
   isScrolled: boolean;
@@ -12,15 +13,23 @@ interface HeaderSectionProps {
 function HeaderSection({ isScrolled }: HeaderSectionProps) {
   const [selectedTab, setSelectedTab] = useState("Homes");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const location = useLocation();
   const isHouseDetailsPage = location.pathname.includes('/house/');
 
   const handleLoginClick = () => {
+    setIsSignupModalOpen(false);
     setIsLoginModalOpen(true);
   };
 
-  const handleCloseLoginModal = () => {
+  const handleSignupClick = () => {
     setIsLoginModalOpen(false);
+    setIsSignupModalOpen(true);
+  };
+
+  const handleCloseModals = () => {
+    setIsLoginModalOpen(false);
+    setIsSignupModalOpen(false);
   };
 
   return (
@@ -79,17 +88,27 @@ function HeaderSection({ isScrolled }: HeaderSectionProps) {
             onClick={handleLoginClick}
             className="text-sm font-semibold text-gray-700 cursor-pointer hover:text-orange-500 transition-colors"
           >
-            Login
+            Log in
+          </button>
+          <button 
+            onClick={handleSignupClick}
+            className="text-sm font-semibold bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition-colors"
+          >
+            Sign up
           </button>
           <FaBars className="text-gray-700 cursor-pointer" />
         </div>
       </div>
 
-      {/* Login Modal */}
+      {/* Auth Modals */}
       <LoginModal
         isOpen={isLoginModalOpen}
-        onClose={handleCloseLoginModal}
+        onClose={handleCloseModals}
         mode="login"
+      />
+      <SignupModal
+        isOpen={isSignupModalOpen}
+        onClose={handleCloseModals}
       />
     </>
   );
