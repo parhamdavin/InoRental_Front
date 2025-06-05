@@ -1,15 +1,22 @@
+import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer/Footer";
-import Navbar from "./Navbar/Navbar";
+import Navbar from "../Navbar/Navbar";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
+function Layout() {
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
+  const isHouseDetailsPage = location.pathname.includes('/house/');
 
-function Layout({ children }: LayoutProps) {
   return (
-    <div className="mx-auto max-w-[1640px]">
-      <Navbar />
-      <div className="mt-28 md:mt-52">{children}</div>
+    <div className="min-h-screen bg-gray-50">
+      {!isAuthPage && (
+        <div className={`${isHouseDetailsPage ? 'relative' : ''}`}>
+          <Navbar />
+        </div>
+      )}
+      <main className={`${isAuthPage ? '' : isHouseDetailsPage ? 'pt-0' : 'pt-24'}`}>
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );
