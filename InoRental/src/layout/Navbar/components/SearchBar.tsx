@@ -8,7 +8,7 @@ function SearchBar({ isScrolled }: SearchBarProps) {
   return (
     <div
       className={`${
-        isScrolled ? "mt-5 px-4 relative" : "px-2"
+        isScrolled ? "mt-5 px-4 relative w-fit mx-auto" : "px-2"
       } hidden md:flex justify-center transition-all`}
     >
       <div

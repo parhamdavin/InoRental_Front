@@ -12,8 +12,8 @@ function HouseCard({ house }: CardProps) {
   };
 
   return (
-    <div className="space-y-2 cursor-pointer" onClick={handleClick}>
-      <div className="size-44 flex-none bg-gray-400 rounded-2xl overflow-hidden">
+    <div className="space-y-2 w-48 cursor-pointer" onClick={handleClick}>
+      <div className="size-44 bg-gray-400 rounded-2xl overflow-hidden">
         <img
           src={house.thumbnail}
           alt="thumbnail"

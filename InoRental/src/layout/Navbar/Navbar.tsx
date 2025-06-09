@@ -15,7 +15,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="bg-white shadow-sm py-4 md:py-0 md:pb-4 w-full top-0 mb-4 fixed">
+    <header className="bg-white shadow-sm py-4 md:py-0 md:pb-4 w-full top-0 mb-4 fixed z-50">
       {/* desktop header */}
       <div ref={headerRef}>
         <HeaderSection isScrolled={isScrolled} />

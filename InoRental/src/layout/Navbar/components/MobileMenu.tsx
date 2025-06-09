@@ -50,7 +50,9 @@ function MobileMenu() {
                       className="flex items-center gap-3 w-full p-3 text-gray-600 hover:bg-orange-50 hover:text-orange-500 rounded-xl transition-colors"
                     >
                       {item.icon}
+                      
                       <span>{item.label}</span>
+
                     </button>
                   </li>
                 ))}
