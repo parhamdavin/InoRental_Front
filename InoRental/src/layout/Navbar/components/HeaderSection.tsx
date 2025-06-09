@@ -94,9 +94,9 @@ function HeaderSection({ isScrolled }: HeaderSectionProps) {
         {/* Logo */}
         <div className="text-orange-600 font-bold text-xl flex items-end gap-x-2 justify-between">
           <p>
-            <img src="/logo.png" className="size-10" alt="Airbnb logo" />
+            <img src="/logo.png" className="size-10" alt="InoRental logo" />
           </p>
-          <p className="text-3xl font-bold">airbnb</p>
+          <p className="text-3xl font-bold">InoRental</p>
         </div>
 
         {/* Navigation Tabs */}

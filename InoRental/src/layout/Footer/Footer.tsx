@@ -10,7 +10,7 @@ export default function Footer() {
           <span className="underline">Unique stays</span>
           <span>Categories</span>
           <span>Travel tips & inspiration</span>
-          <span>Airbnb-friendly apartments</span>
+          <span>InoRental-friendly apartments</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {[
@@ -58,18 +58,18 @@ export default function Footer() {
           {
             title: "Hosting",
             items: [
-              "Airbnb your home",
+              "InoRental your home",
               "AirCover for Hosts",
               "Hosting resources",
               "Community forum",
               "Hosting responsibly",
-              "Airbnb-friendly apartments",
+              "InoRental-friendly apartments",
               "Join a free Hosting class",
               "Find a co-host",
             ],
           },
           {
-            title: "Airbnb",
+            title: "InoRental",
             items: [
               "2025 Summer Release",
               "Newsroom",
@@ -77,7 +77,7 @@ export default function Footer() {
               "Careers",
               "Investors",
               "Gift cards",
-              "Airbnb.org emergency stays",
+              "InoRental.org emergency stays",
             ],
           },
         ].map((section, idx) => (
@@ -95,7 +95,7 @@ export default function Footer() {
       {/* Legal / Settings Row */}
       <div className="mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
         <div className="space-x-3 mb-3 md:mb-0">
-          <span>© 2025 Airbnb, Inc.</span>
+          <span>© 2025 InoRental, Inc.</span>
           <span>· Terms</span>
           <span>· Sitemap</span>
           <span>· Privacy</span>
