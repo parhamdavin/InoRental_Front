@@ -63,6 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     lastName: string
   ) => {
     try {
+      debugger;
       const response = await api.upost("/api/register/", {
         username,
         email,
@@ -73,6 +74,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (response.ok) {
         await login(email, password); // Auto-login after successful signup
       } else {
+        if (response.body.email) {
+          throw new Error(response.body.email[0]);
+        }
+        if (response.body.username) {
+          throw new Error(response.body.username);
+        }
         throw new Error(response.body.message || "Failed to create account");
       }
     } catch (error) {

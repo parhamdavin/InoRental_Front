@@ -4,17 +4,30 @@ import { FaBed, FaBath, FaUserFriends, FaHeart, FaShare } from "react-icons/fa";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useApi } from "../../../contexts/ApiProvider";
 import toast from "react-hot-toast";
-import type { House } from "../../../types/property";
+import type { House, Availability } from "../../../types/property";
+import ReservationModal from "../../../components/ReservationModal/ReservationModal";
+
+interface Review {
+  review_id: number;
+  guest: {
+    username: string;
+  };
+  rating: number;
+  comment: string;
+  created_at: string;
+}
 
 function HouseDetailPage() {
   const { id } = useParams();
   const [house, setHouse] = useState<House | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const api = useApi();
 
   const fetchHouseDetail = async () => {
     try {
-      const response = await api.get(`/api/properties/${id}`);
+      const response = await api.uget(`/api/properties/${id}`);
       if (response.ok && response.body) {
         setHouse(response.body);
       } else {
@@ -25,8 +38,24 @@ function HouseDetailPage() {
     }
   };
 
+  const fetchReviews = async () => {
+    try {
+      debugger
+      const response = await api.uget(`/api/reviews/${id}/`);
+      if (response.ok && response.body) {
+        // Handle single review object by wrapping it in an array
+        setReviews(Array.isArray(response.body) ? response.body : [response.body]);
+      } else {
+        toast.error("Error fetching reviews");
+      }
+    } catch (error) {
+      toast.error("Failed to fetch reviews!");
+    }
+  };
+
   useEffect(() => {
     fetchHouseDetail();
+    fetchReviews();
   }, [id, api]);
 
   if (!house) {
@@ -98,10 +127,6 @@ function HouseDetailPage() {
                 <h2 className="text-xl sm:text-2xl font-semibold">
                   Hosted by {house.host.username} {house.host.last_name}
                 </h2>
-                {/* <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                  <MdVerified className="text-blue-500 text-lg" />
-                  <span className="font-medium">Superhost</span>
-                </div> */}
               </div>
             </div>
             <button className="w-full sm:w-auto px-6 py-2 border rounded-lg hover:bg-gray-50 transition-all">
@@ -189,7 +214,7 @@ function HouseDetailPage() {
             <h3 className="text-lg font-semibold mb-2">Availability</h3>
             {house.availabilities.length > 0 ? (
               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                {house.availabilities.map((a, index) => (
+                {house.availabilities.map((a: Availability, index: number) => (
                   <li key={index}>
                     {a.start_date} → {a.end_date}
                   </li>
@@ -197,6 +222,51 @@ function HouseDetailPage() {
               </ul>
             ) : (
               <p className="text-sm text-gray-500">No availability listed</p>
+            )}
+          </div>
+
+          {/* Reviews */}
+          <div className="border-b pb-6 sm:pb-8">
+            <h3 className="text-lg font-semibold mb-4">Reviews</h3>
+            {reviews.length > 0 ? (
+              <div className="space-y-4">
+                {reviews.map((review) => (
+                  <div key={review.review_id} className=" pb-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">
+                        {review.guest.username[0].toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm">
+                          {review.guest.username}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg
+                          key={i}
+                          className={`w-4 h-4 ${
+                            i < review.rating
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-600">{review.comment}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">No reviews yet</p>
             )}
           </div>
         </div>
@@ -216,7 +286,10 @@ function HouseDetailPage() {
               </div>
             </div>
 
-            <button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 sm:py-4 rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg hover:shadow-xl">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 sm:py-4 rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg hover:shadow-xl"
+            >
               Reserve
             </button>
 
@@ -243,6 +316,13 @@ function HouseDetailPage() {
           </div>
         </div>
       </div>
+
+      <ReservationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        house={house}
+        pricePerNight={pricePerNight}
+      />
     </div>
   );
 }

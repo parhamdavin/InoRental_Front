@@ -18,13 +18,35 @@ export interface Photo {
   property: number;
 }
 
+export interface PropertyPhoto {
+  image: string;
+}
+
+export interface Availability {
+  start_date: string;
+  end_date: string;
+  price: number;
+}
+
 export interface Property {
-  property_id: number;
-  host: Host;
-  photos: Photo[];
-  availabilities: any[]; // TODO: Define availability interface if needed
+  id: number;
   title: string;
   description: string;
+  photos: PropertyPhoto[];
+  price_per_night: string;
+  location: string;
+  bedrooms: number;
+  bathrooms: number;
+  max_guests: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface House extends Property {
+  property_type: string;
+  room_category: string;
+  amenities: string[];
+  rules: string[];
   address_street: string;
   address_city: string;
   address_state: string;
@@ -32,20 +54,19 @@ export interface Property {
   address_country: string;
   latitude: number | null;
   longitude: number | null;
-  property_type: string;
-  room_category: string;
-  price_per_night: string;
-  max_guests: number;
   num_bedrooms: number | null;
   num_beds: number | null;
   num_bathrooms: number | null;
-  created_at: string;
-  updated_at: string;
+  availabilities: Availability[];
+  host: {
+    id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_picture_url?: string;
+  };
 }
-
-// House is just another name for Property, which includes Host and Photo
-export type House = Property;
-
 
 export interface PropertyResponse {
   data: Property;
